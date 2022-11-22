@@ -42,7 +42,7 @@ public class ParserVisitor implements TokenVisitor {
     @Override
     public void visit(final BraceToken token) throws ParseTokensException {
         if (token == BraceToken.LEFT) {
-            queue.push(token);
+            queue.addLast(token);
             return;
         }
         
@@ -79,6 +79,6 @@ public class ParserVisitor implements TokenVisitor {
             queue.pollLast();
         }
         
-        queue.add(token);
+        queue.addLast(token);
     }
 }

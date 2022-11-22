@@ -32,7 +32,7 @@ public class CalcVisitor implements TokenVisitor {
     
     @Override
     public void visit(final NumberToken token) {
-        queue.add(token.value());
+        queue.addLast(token.value());
     }
     
     @Override
@@ -45,7 +45,11 @@ public class CalcVisitor implements TokenVisitor {
         if (queue.size() < 2) {
             throw new UnsupportedOperationException("This operation isn't allowed! Tokens list is not well formed!");
         }
+    
+    
+        int second = queue.pollLast();
+        int first = queue.pollLast();
         
-        queue.push(token.eval(queue.pollLast(), queue.pollLast()));
+        queue.addLast(token.eval(first, second));
     }
 }
