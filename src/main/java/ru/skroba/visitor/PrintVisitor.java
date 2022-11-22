@@ -20,7 +20,7 @@ public class PrintVisitor implements TokenVisitor {
     
     @Override
     public void visit(final NumberToken token) {
-        result.append(token.toString());
+        result.append(token.toString()).append(" ");
     }
     
     @Override
@@ -30,6 +30,6 @@ public class PrintVisitor implements TokenVisitor {
     
     @Override
     public void visit(final OperationToken token) {
-        result.append(token.toString());
+        result.append(token.toString()).append(" ");
     }
 }

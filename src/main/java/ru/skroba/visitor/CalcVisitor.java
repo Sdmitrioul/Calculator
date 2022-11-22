@@ -19,7 +19,7 @@ public class CalcVisitor implements TokenVisitor {
         
         tokens.forEach(it -> it.accept(this));
         
-        final int result = queue.isEmpty() ? 0 : queue.poll();
+        final int result = queue.isEmpty() ? 0 : queue.pollLast();
         
         if (!queue.isEmpty()) {
             throw new VisitorException("Queue is not empty: lost: " + queue.stream()
@@ -46,6 +46,6 @@ public class CalcVisitor implements TokenVisitor {
             throw new UnsupportedOperationException("This operation isn't allowed! Tokens list is not well formed!");
         }
         
-        queue.push(token.eval(queue.pop(), queue.pop()));
+        queue.push(token.eval(queue.pollLast(), queue.pollLast()));
     }
 }

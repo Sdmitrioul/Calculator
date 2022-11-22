@@ -21,10 +21,10 @@ public class ParserVisitor implements TokenVisitor {
         tokens.forEach(it -> it.accept(this));
         
         while (!queue.isEmpty()) {
-            Token prev = queue.peek();
+            Token prev = queue.peekLast();
             if (prev instanceof OperationToken) {
                 parsed.add(prev);
-                queue.poll();
+                queue.pollLast();
                 continue;
             }
             
@@ -47,16 +47,16 @@ public class ParserVisitor implements TokenVisitor {
         }
         
         while (!queue.isEmpty()) {
-            Token prev = queue.peek();
+            Token prev = queue.peekLast();
             
             if (prev == BraceToken.LEFT) {
-                queue.poll();
+                queue.pollLast();
                 break;
             }
             
             if (prev instanceof OperationToken) {
                 parsed.add(prev);
-                queue.poll();
+                queue.pollLast();
                 continue;
             }
             
@@ -69,14 +69,14 @@ public class ParserVisitor implements TokenVisitor {
     @Override
     public void visit(final OperationToken token) {
         while (!queue.isEmpty()) {
-            Token prev = queue.peek();
+            Token prev = queue.peekLast();
             
             if (!(prev instanceof OperationToken prevOp) || token.getPriority() < prevOp.getPriority()) {
                 break;
             }
             
             parsed.add(prev);
-            queue.poll();
+            queue.pollLast();
         }
         
         queue.add(token);
