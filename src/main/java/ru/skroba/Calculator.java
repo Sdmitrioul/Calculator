@@ -8,6 +8,7 @@ import ru.skroba.visitor.CalcVisitor;
 import ru.skroba.visitor.ParserVisitor;
 import ru.skroba.visitor.PrintVisitor;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,39 +18,31 @@ public class Calculator {
         CalcVisitor calculator = new CalcVisitor();
         PrintVisitor printer = new PrintVisitor();
         
-        try (Scanner scanner = new Scanner(System.in)) {
+        try (Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8)) {
             while (true) {
-                if (process(parser, calculator, printer, scanner)) {
-                    break;
+                System.out.println("For exit write :e\nWrite your expression: ");
+                
+                if (scanner.hasNextLine()) {
+                    String input = scanner.nextLine();
+                    
+                    if (":e".equals(input)) {
+                        break;
+                    }
+                    
+                    Tokenizer tokenizer = new CalculatorTokenizer(input);
+                    
+                    try {
+                        List<Token> parsed = parser.parse(tokenizer.getTokens());
+                        
+                        System.out.println(input + " -> ");
+                        System.out.println(printer.print(parsed) + " == " + calculator.calculate(parsed));
+                    } catch (TokenizerException e) {
+                        System.err.println("Exception: " + e.getMessage());
+                    } catch (ArithmeticException e) {
+                        System.err.println("Division by null!");
+                    }
                 }
             }
         }
-    }
-    
-    private static boolean process(final ParserVisitor parser, final CalcVisitor calculator, final PrintVisitor printer,
-                                   final Scanner scanner) {
-        System.out.println("For exit write :e");
-        System.out.print("Write your expression: ");
-        
-        if (scanner.hasNext()) {
-            String input = scanner.nextLine();
-            
-            if (":e".equals(input)) {
-                return true;
-            }
-            
-            Tokenizer tokenizer = new CalculatorTokenizer(input);
-            
-            try {
-                List<Token> parsed = parser.parse(tokenizer.getTokens());
-                
-                System.out.println(input + " -> ");
-                System.out.println(printer.print(parsed) + " == " + calculator.calculate(parsed));
-            } catch (TokenizerException e) {
-                System.err.println("Exception: " + e.getMessage());
-            }
-        }
-        
-        return false;
     }
 }
