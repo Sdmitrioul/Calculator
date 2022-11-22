@@ -20,29 +20,30 @@ public class Calculator {
         
         try (Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8)) {
             while (true) {
-                System.out.println("For exit write :e\nWrite your expression: ");
+                greet();
+                String input = scanner.nextLine();
                 
-                if (scanner.hasNextLine()) {
-                    String input = scanner.nextLine();
+                if (":e".equals(input)) {
+                    break;
+                }
+                
+                Tokenizer tokenizer = new CalculatorTokenizer(input);
+                
+                try {
+                    List<Token> parsed = parser.parse(tokenizer.getTokens());
                     
-                    if (":e".equals(input)) {
-                        break;
-                    }
-                    
-                    Tokenizer tokenizer = new CalculatorTokenizer(input);
-                    
-                    try {
-                        List<Token> parsed = parser.parse(tokenizer.getTokens());
-                        
-                        System.out.println(input + " -> ");
-                        System.out.println(printer.print(parsed) + " == " + calculator.calculate(parsed));
-                    } catch (TokenizerException e) {
-                        System.err.println("Exception: " + e.getMessage());
-                    } catch (ArithmeticException e) {
-                        System.err.println("Division by null!");
-                    }
+                    System.out.println(input + " -> ");
+                    System.out.println(printer.print(parsed) + " == " + calculator.calculate(parsed));
+                } catch (TokenizerException e) {
+                    System.err.println("Exception: " + e.getMessage());
+                } catch (ArithmeticException e) {
+                    System.err.println("Division by null!");
                 }
             }
         }
+    }
+    
+    private static void greet() {
+        System.out.print("For exit write :e\nWrite your expression: ");
     }
 }
