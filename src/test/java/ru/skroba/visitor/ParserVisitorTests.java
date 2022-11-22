@@ -16,7 +16,7 @@ import static ru.skroba.token.OperationToken.SUB;
 import static ru.skroba.token.OperationToken.SUM;
 
 public class ParserVisitorTests {
-    private ParserVisitor visitor = new ParserVisitor();
+    private final ParserVisitor visitor = new ParserVisitor();
     
     @Test
     void testJustNumber() {

@@ -8,15 +8,13 @@ import ru.skroba.token.Token;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.skroba.token.BraceToken.LEFT;
-import static ru.skroba.token.BraceToken.RIGHT;
 import static ru.skroba.token.OperationToken.DIV;
 import static ru.skroba.token.OperationToken.MUL;
 import static ru.skroba.token.OperationToken.SUB;
 import static ru.skroba.token.OperationToken.SUM;
 
 public class CalcVisitorTests {
-    private CalcVisitor visitor = new CalcVisitor();
+    private final CalcVisitor visitor = new CalcVisitor();
     
     @Test
     void testJustNumber() {
@@ -74,7 +72,7 @@ public class CalcVisitorTests {
         for (OperationToken firstOp : List.of(MUL, DIV)) {
             for (OperationToken secOp : List.of(MUL, DIV)) {
                 List<Token> tokens = List.of(num1, num2, firstOp, num3, secOp);
-    
+                
                 assertEquals(secOp.eval(firstOp.eval(num1.value(), num2.value()), num3.value()),
                         visitor.calculate(tokens));
             }
@@ -83,9 +81,9 @@ public class CalcVisitorTests {
         // 0 <*/> 32 <*/> 25
         for (OperationToken firstOp : List.of(MUL, DIV)) {
             for (OperationToken secOp : List.of(MUL, DIV)) {
-                List<Token> tokens = List.of(num1, num2,firstOp, num3, secOp);
-    
-                assertEquals( secOp.eval(firstOp.eval(num1.value(), num2.value()), num3.value()),
+                List<Token> tokens = List.of(num1, num2, firstOp, num3, secOp);
+                
+                assertEquals(secOp.eval(firstOp.eval(num1.value(), num2.value()), num3.value()),
                         visitor.calculate(tokens));
             }
         }
@@ -94,7 +92,7 @@ public class CalcVisitorTests {
         for (OperationToken firstOp : List.of(SUM, SUB)) {
             for (OperationToken secOp : List.of(SUM, SUB)) {
                 List<Token> tokens = List.of(num1, num2, firstOp, num3, secOp);
-    
+                
                 assertEquals(secOp.eval(firstOp.eval(num1.value(), num2.value()), num3.value()),
                         visitor.calculate(tokens));
             }
@@ -104,9 +102,9 @@ public class CalcVisitorTests {
         for (OperationToken firstOp : List.of(SUM, SUB)) {
             for (OperationToken secOp : List.of(SUM, SUB)) {
                 List<Token> tokens = List.of(num1, num2, firstOp, num3, secOp);
-    
+                
                 System.out.println(tokens);
-                assertEquals( secOp.eval(firstOp.eval(num1.value(), num2.value()), num3.value()),
+                assertEquals(secOp.eval(firstOp.eval(num1.value(), num2.value()), num3.value()),
                         visitor.calculate(tokens));
             }
         }

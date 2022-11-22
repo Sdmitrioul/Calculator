@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PrintVisitorTests {
-    private PrintVisitor printVisitor = new PrintVisitor();
+    private final PrintVisitor printVisitor = new PrintVisitor();
     
     @Test
     void testBaseNum() {
