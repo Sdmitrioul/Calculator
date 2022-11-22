@@ -17,19 +17,9 @@ public final class CalculatorTokenizer implements Tokenizer {
     private State state;
     
     public CalculatorTokenizer(final String text) {
-        this.text = removeAllSpaces(text);
+        this.text = text.trim();
         this.index = 0;
         this.state = new StartState();
-    }
-    
-    private String removeAllSpaces(final String text) {
-        final StringBuilder result = new StringBuilder();
-        
-        for (char c : text.toCharArray()) {
-            result.append(c);
-        }
-        
-        return result.toString();
     }
     
     @Override
@@ -37,7 +27,12 @@ public final class CalculatorTokenizer implements Tokenizer {
         List<Token> tokens = new LinkedList<>();
         
         while (!(state instanceof EndState)) {
+            while (hasNext() && Character.isWhitespace(curChar())) {
+                nextChar();
+            }
+            
             tokens.add(state.createToken(this));
+            
             state.setNextState(this);
         }
         

@@ -2,13 +2,12 @@ package ru.skroba.tokenizer;
 
 import org.junit.jupiter.api.Test;
 import ru.skroba.exception.TokenizerException;
-import ru.skroba.token.CharToken;
 import ru.skroba.token.NumberToken;
 import ru.skroba.token.Token;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.skroba.Util.CHAR_TOKENS;
@@ -38,14 +37,13 @@ public class CalculatorTokenizerTests {
     @Test
     void testRandomSequenceOfTokens() throws TokenizerException {
         for (int i = 0; i < 100; i++) {
-            List<Token> tokens = Stream.iterate(generateRandomToken(),
-                            token -> token instanceof NumberToken ? getCharToken() : generateRandomToken())
-                    .limit((int) (Math.random() * 120))
+            List<Token> tokens = IntStream.range(0, (int) (Math.random() * 120) + 1)
+                    .mapToObj(it -> generateRandomToken())
                     .toList();
             
             CalculatorTokenizer tokenizer = new CalculatorTokenizer(tokens.stream()
                     .map(Object::toString)
-                    .collect(Collectors.joining()));
+                    .collect(Collectors.joining(" ".repeat((int) (Math.random() * 10 + 1)))));
             
             assertEquals(tokens, tokenizer.getTokens());
         }
@@ -55,12 +53,8 @@ public class CalculatorTokenizerTests {
         if (Math.random() > 0.5) {
             return new NumberToken((int) (Math.random() * (Integer.MAX_VALUE - 10)));
         } else {
-            return getCharToken();
+            int index = (int) (Math.random() * CHAR_TOKENS.size());
+            return CHAR_TOKENS.get(index);
         }
-    }
-    
-    private static CharToken getCharToken() {
-        int index = (int) (Math.random() * CHAR_TOKENS.size());
-        return CHAR_TOKENS.get(index);
     }
 }

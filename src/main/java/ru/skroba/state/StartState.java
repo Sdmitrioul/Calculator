@@ -56,7 +56,7 @@ public final class StartState implements State {
     }
     
     public static boolean contains(final char value) {
-        return TOKENS.stream()
+        return Character.isWhitespace(value) || TOKENS.stream()
                 .map(CharToken::getValue)
                 .anyMatch(it -> it == value);
     }
