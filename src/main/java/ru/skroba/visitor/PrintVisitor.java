@@ -15,7 +15,7 @@ public class PrintVisitor implements TokenVisitor {
         
         tokens.forEach(it -> it.accept(this));
         
-        return result.toString();
+        return result.toString().trim();
     }
     
     @Override
